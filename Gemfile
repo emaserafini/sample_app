@@ -1,45 +1,36 @@
 source 'https://rubygems.org'
+ruby '2.1.1'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.3'
 
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+gem 'sqlite3', '~> 1.3.8'
+gem 'jquery-rails', '~> 3.1.0'
+gem 'turbolinks', '~> 2.2.1'
+gem 'jbuilder', '~> 2.0.3'
+gem 'haml-rails', '~> 0.5.3'
 
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
+gem 'unicorn', '~> 4.8.2', group: :production
+gem 'puma', '~> 2.8.1', group: :production
 
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+# group :development, :test do
+#   gem 'rspec-rails', '~> 2.14.1'
+#   gem 'spork-rails', '~> 4.0.0'
+#   gem 'guard-rspec', '~> 4.2.8'
+#   gem 'guard-spork', '~> 1.5.1'
+# end
 
-# Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '~> 4.0.0'
-
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.2'
-
-group :doc do
-  # bundle exec rake doc:rails generates the API under doc/api.
-  gem 'sdoc', require: false
+group :development do
+  gem 'capistrano', '~> 3.1.0'
+  gem 'capistrano-rails', '~> 1.1.1'
+  gem 'capistrano-rvm', '~> 0.1.1'
 end
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.1.2'
+# group :test do
+#   gem 'factory_girl_rails', '~> 4.3.0'
+# end
 
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
+group :assets do
+  gem 'sass-rails', '~> 4.0.1'
+  gem 'uglifier', '~> 2.4.0'
+  gem 'coffee-rails', '~> 4.0.1'
+end
