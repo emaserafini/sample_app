@@ -18,6 +18,12 @@ test:
   pool: 5
   timeout: 5000
 
+staging:
+  adapter: sqlite3
+  database: /var/apps/sample_app/shared/db/staging.sqlite3
+  pool: 5
+  timeout: 5000
+
 production:
   adapter: sqlite3
   database: db/production.sqlite3
