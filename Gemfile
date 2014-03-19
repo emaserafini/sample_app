@@ -8,6 +8,7 @@ gem 'jquery-rails', '~> 3.1.0'
 gem 'turbolinks', '~> 2.2.1'
 gem 'jbuilder', '~> 2.0.3'
 gem 'haml-rails', '~> 0.5.3'
+gem 'thread_safe', '0.2.0'
 
 gem 'unicorn', '~> 4.8.2', group: :production
 gem 'puma', '~> 2.8.1', group: :production
