@@ -1,0 +1,26 @@
+namespace :monit do
+
+  task :puma  do
+    on roles :app do
+      monit_config "puma"
+    end
+    after "monit:puma", "monit:reload"
+  end
+
+  desc "Monit summary"
+  task :summary do
+    on roles :app do
+      puts capture :sudo, :monit, :summary
+    end
+  end
+
+  %w[start stop restart syntax reload].each do |command|
+    desc "Run Monit #{command} script"
+    task command do
+      on roles(:app) do
+        execute :sudo, "service monit #{command}"
+      end
+    end
+  end
+
+end

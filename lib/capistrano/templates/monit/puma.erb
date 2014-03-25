@@ -1,0 +1,4 @@
+check process <%= fetch(:app_env) %> with pidfile <%= fetch(:puma_pid) %>
+  start program = "/sbin/start <%= fetch(:app_env) %>"
+  stop program = "/sbin/stop <%= fetch(:app_env) %>"
+  if 5 restarts within 5 cycles then timeout

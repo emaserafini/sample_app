@@ -1,0 +1,22 @@
+namespace :nginx do
+
+  desc "Configure nginx to run with puma"
+  task :setup do
+    on roles(:web) do
+      template "nginx_puma.erb", "/tmp/nginx_conf", true
+      execute :sudo, :mv, "/tmp/nginx_conf /etc/nginx/sites-available/#{fetch(:app_env)}"
+      execute :sudo, :ln, "-sf /etc/nginx/sites-available/#{fetch(:app_env)} /etc/nginx/sites-enabled/#{fetch(:app_env)}"
+    end
+    after "nginx:setup", "nginx:restart"
+  end
+
+  %w[start stop restart].each do |command|
+    desc "#{command.capitalize} nginx"
+    task command do
+      on roles(:web) do
+        execute :sudo, "service nginx #{command}"
+      end
+    end
+  end
+
+end

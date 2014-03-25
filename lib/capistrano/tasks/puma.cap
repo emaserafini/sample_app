@@ -1,0 +1,43 @@
+set :puma_config, -> { "#{shared_path}/config/puma.rb" }
+
+set :puma_pid, -> { "#{current_path}/tmp/puma.pid" }
+set :puma_sock, -> { "#{current_path}/tmp/puma.sock" }
+set :puma_state, -> { "#{shared_path}/tmp/puma.state" }
+set :puma_log, -> { "#{shared_path}/log/puma.log" }
+
+namespace :puma do
+
+  desc "Setup Puma configuration and upstart script"
+  task :setup do
+    on roles(:app) do
+      execute :mkdir, "-p #{shared_path}/config"
+
+      # Puma configuration
+      template "puma.erb", fetch(:puma_config)
+
+      # Upstart script for puma
+      template "puma_upstart.erb", "/tmp/puma_upstart", true
+      execute :sudo ,:chmod, "+x /tmp/puma_upstart"
+      execute :sudo, :mv, "/tmp/puma_upstart /etc/init/#{fetch(:app_env)}.conf"
+    end
+
+    after "puma:setup", "puma:hot_restart"
+  end
+
+  %w[start stop restart].each do |command|
+    desc "#{command.capitalize} puma"
+    task command do
+      on roles(:app) do
+        execute :sudo, "#{command} #{fetch(:app_env)}"
+      end
+    end
+  end
+
+  desc "Hot-Restart puma"
+  task :hot_restart do
+    on roles(:app) do
+      execute :kill, "-s SIGUSR2 `cat #{fetch(:puma_pid)}`"
+    end
+  end
+
+end

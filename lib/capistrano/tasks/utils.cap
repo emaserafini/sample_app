@@ -1,0 +1,18 @@
+def template(from, to, as_root = false)
+  template_path = File.expand_path("../../templates/#{from}", __FILE__)
+  template = ERB.new(File.new(template_path).read).result(binding)
+  upload! StringIO.new(template), to
+
+  execute :sudo, :chmod, "644 #{to}"
+  execute :sudo, :chown, "root:root #{to}" if as_root == true
+end
+
+def monit_config(name, destination = nil)
+  destination ||= "/etc/monit/conf.d/#{fetch(:app_env)}.conf"
+  template "monit/#{name}.erb", "/tmp/monit_#{name}"#, true
+  execute :sudo, :mv, "/tmp/monit_#{name} #{destination}"
+  execute :sudo, :chown, "root #{destination}"
+  execute :sudo, :chmod, "600 #{destination}"
+end
+
+
